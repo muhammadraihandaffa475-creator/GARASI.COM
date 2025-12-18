@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GARASI SPN POLDA JATIM</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+<style>
+/* THEME VARIABLES */
+:root {
+    --primary: #0f3460;
+    --secondary: #e94560;
+    --bg: #f3f4f6;
+    --text: #1f2937;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(255, 255, 255, 0.6);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+}
+body.dark {
+    --bg: #111827;
+    --text: #f9fafb;
+    --card-bg: rgba(31, 41, 55, 0.8);
+    --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    transition: background 0.3s, color 0.3s;
+    min-height: 100vh;
+}
+
+/* GLASS HEADER */
+.glass-header {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky; top: 0; z-index: 1000;
+}
+
+/* CARDS & CONTAINERS */
+.glass-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    margin-bottom: 2rem;
+}
+
+/* STATS BOXES */
+.stat-box {
+    padding: 1.5rem;
+    border-radius: 16px;
+    color: white;
+    transition: transform 0.3s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.stat-box:hover { transform: translateY(-5px); }
+.stat-box.safe { background: linear-gradient(135deg, #059669, #34d399); }
+.stat-box.warn { background: linear-gradient(135deg, #d97706, #fbbf24); }
+.stat-box.danger { background: linear-gradient(135deg, #dc2626, #f87171); }
+
+/* MODERN TABLE */
+.modern-table { border-collapse: separate; border-spacing: 0 8px; width: 100%; }
+.modern-table thead th {
+    border: none;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    color: var(--text);
+    opacity: 0.7;
+    padding: 1rem;
+}
+.modern-table tbody tr {
+    background: var(--card-bg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    transition: 0.2s;
+}
+.modern-table tbody tr:hover { transform: scale(1.01); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+.modern-table td { border: none; padding: 1rem; vertical-align: middle; }
+.modern-table td:first-child { border-radius: 12px 0 0 12px; }
+.modern-table td:last-child { border-radius: 0 12px 12px 0; }
+
+/* BUTTONS & INPUTS */
+.icon-btn { width: 36px; height: 36px; border-radius: 50%; border: none; display: inline-flex; align-items: center; justify-content: center; margin: 0 2px; transition: 0.2s; }
+.icon-btn.ok { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+.icon-btn.ok:hover { background: #10b981; color: white; }
+.icon-btn.edit { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
+.icon-btn.edit:hover { background: #f59e0b; color: white; }
+.icon-btn.del { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+.icon-btn.del:hover { background: #ef4444; color: white; }
+
+.modern-input {
+    background: rgba(0,0,0,0.03); border: 1px solid transparent; border-radius: 10px; padding: 0.75rem 1rem; color: var(--text);
+}
+.modern-input:focus { background: white; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(15, 52, 96, 0.1); outline: none; }
+
+.btn-gradient {
+    background: linear-gradient(135deg, var(--primary), #1e3a8a); color: white; border: none; border-radius: 10px; padding: 0.75rem; font-weight: 600; box-shadow: 0 4px 12px rgba(15, 52, 96, 0.3);
+}
+.btn-gradient:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15, 52, 96, 0.4); color: white; }
+
+/* BADGES & BLOBS */
+.badge { padding: 0.5em 1em; border-radius: 30px; font-weight: 600; font-size: 0.75rem; }
+.badge.safe { background: rgba(16, 185, 129, 0.15); color: #059669; }
+.badge.warn { background: rgba(245, 158, 11, 0.15); color: #d97706; }
+.badge.danger { background: rgba(239, 68, 68, 0.15); color: #dc2626; }
+
+.bg-blob { position: fixed; border-radius: 50%; filter: blur(80px); z-index: -1; opacity: 0.5; }
+.blob-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: #60a5fa; }
+.blob-2 { bottom: -10%; right: -10%; width: 400px; height: 400px; background: #34d399; }
+.modal-content { background: var(--card-bg); border-radius: 20px; border: none; color: var(--text); }
+</style>
+</head>
+
+<body>
+
+<!-- Background Effects -->
+<div class="bg-blob blob-1"></div>
+<div class="bg-blob blob-2"></div>
+
+<!-- Header Baru -->
+<nav class="glass-header py-3 mb-4 shadow-sm">
+  <div class="container d-flex justify-content-between align-items-center">
+    <div class="d-flex align-items-center">
+        <img src="https://yt3.ggpht.com/a/AATXAJwDikBj_PcvGKe5caluqknHoXgqXk7I5vY1CqY9=s900-c-k-c0xffffffff-no-rj-mo" alt="Logo" style="height:50px; width:50px; border-radius:50%; object-fit:cover;" class="me-3 shadow-sm">
+        <div>
+            <h4 class="m-0 fw-bold title-gradient" style="line-height:1.2">GARASI SPN POLDA JATIM</h4>
+            <small class="text-muted" style="font-size:0.85rem">Sistem Monitoring Kendaraan Dinas</small>
+        </div>
+    </div>
+    <button class="btn btn-light rounded-circle shadow-sm" onclick="document.body.classList.toggle('dark')"><i class="fas fa-adjust"></i></button>
+  </div>
+</nav>
+
+<div class="container main-container pb-5">
+
+<!-- STATS -->
+<div class="row g-3 mb-4">
+<div class="col-md-4">
+<div class="stat-box safe">
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        <span class="d-block text-uppercase small fw-bold opacity-75">Kondisi Aman</span>
+        <h2 id="countSafe" class="m-0 display-5 fw-bold">0</h2>
+    </div>
+    <i class="fas fa-check-circle fa-2x opacity-50"></i>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="stat-box warn">
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        <span class="d-block text-uppercase small fw-bold opacity-75">Perlu Servis</span>
+        <h2 id="countWarn" class="m-0 display-5 fw-bold">0</h2>
+    </div>
+    <i class="fas fa-exclamation-circle fa-2x opacity-50"></i>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+<div class="stat-box danger">
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        <span class="d-block text-uppercase small fw-bold opacity-75">Lewat Jadwal</span>
+        <h2 id="countDanger" class="m-0 display-5 fw-bold">0</h2>
+    </div>
+    <i class="fas fa-times-circle fa-2x opacity-50"></i>
+</div>
+</div>
+</div>
+</div>
+
+<!-- NAV TABS UTAMA -->
+<div class="d-flex justify-content-center mb-4">
+    <div class="bg-white p-1 rounded-pill shadow-sm d-inline-flex" style="border:1px solid rgba(0,0,0,0.1)">
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active rounded-pill px-4" data-bs-toggle="pill" data-bs-target="#list">
+                    <i class="fas fa-list me-2"></i>Data Kendaraan
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link rounded-pill px-4" data-bs-toggle="pill" data-bs-target="#add">
+                    <i class="fas fa-plus me-2"></i>Input Baru
+                </button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="tab-content">
+
+<!-- LIST -->
+<div class="tab-pane fade show active" id="list">
+<div class="glass-card">
+
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+    <ul class="nav nav-pills gap-2" id="subTab" role="tablist">
+        <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab2"><i class="fas fa-motorcycle me-2"></i>R2</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab4"><i class="fas fa-car me-2"></i>R4</button></li>
+        <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tab6"><i class="fas fa-truck me-2"></i>R6</button></li>
+    </ul>
+    <div class="input-group" style="max-width: 300px;">
+        <span class="input-group-text bg-transparent border-end-0"><i class="fas fa-search text-muted"></i></span>
+        <input id="search" class="form-control border-start-0 ps-0" placeholder="Cari Nopol / Kendaraan...">
+    </div>
+</div>
+
+<div class="tab-content">
+
+<div class="tab-pane fade show active" id="tab2">
+<div class="table-responsive">
+<table class="table modern-table">
+<thead>
+<tr>
+<th>Kendaraan</th>
+<th>Merek</th>
+<th>No. Pol</th>
+<th>Servis Terakhir</th>
+<th>Jadwal</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="data2"></tbody>
+</table>
+</div>
+</div>
+
+<div class="tab-pane fade" id="tab4">
+<div class="table-responsive">
+<table class="table modern-table">
+<thead>
+<tr>
+<th>Kendaraan</th>
+<th>Merek</th>
+<th>No. Pol</th>
+<th>Servis Terakhir</th>
+<th>Jadwal</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="data4"></tbody>
+</table>
+</div>
+</div>
+
+<div class="tab-pane fade" id="tab6">
+<div class="table-responsive">
+<table class="table modern-table">
+<thead>
+<tr>
+<th>Kendaraan</th>
+<th>Merek</th>
+<th>No. Pol</th>
+<th>Servis Terakhir</th>
+<th>Jadwal</th>
+<th>Status</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody id="data6"></tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+<!-- ADD -->
+<div class="tab-pane fade" id="add">
+<div class="glass-card">
+<form id="form">
+<div class="row g-4">
+<div class="col-md-2">
+<label class="form-label">Nama Kendaraan</label>
+<input id="mobil" class="form-control modern-input" required>
+</div>
+<div class="col-md-2">
+<label class="form-label">Merek</label>
+<input id="merek" class="form-control modern-input" required>
+</div>
+<div class="col-md-2">
+<label class="form-label">No. Pol</label>
+<input id="nopol" class="form-control modern-input" required>
+</div>
+<div class="col-md-2">
+<label class="form-label">Tipe</label>
+<select id="wheels" class="form-select modern-input">
+<option value="4">Mobil (Roda 4)</option>
+<option value="2">Motor (Roda 2)</option>
+<option value="6">Truk (Roda 6)</option>
+</select>
+</div>
+<div class="col-md-2">
+<label class="form-label">Servis Terakhir</label>
+<input type="date" id="last" class="form-control modern-input" required>
+</div>
+<div class="col-md-1">
+<label class="form-label">Interval</label>
+<input type="number" id="interval" value="6" class="form-control modern-input">
+</div>
+<div class="col-md-1 d-flex align-items-end">
+<button class="btn btn-gradient w-100">
+<i class="fas fa-save me-1"></i>Simpan
+</button>
+</div>
+</div>
+</form>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal fade" id="editModal" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">Edit Data</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+<div class="modal-body">
+<form>
+<input type="hidden" id="editIndex">
+<div class="mb-3">
+<label class="form-label">Nama Kendaraan</label>
+<input id="editMobil" class="form-control modern-input">
+</div>
+<div class="mb-3">
+<label class="form-label">Merek</label>
+<input id="editMerek" class="form-control modern-input">
+</div>
+<div class="mb-3">
+<label class="form-label">No. Pol</label>
+<input id="editNopol" class="form-control modern-input">
+</div>
+<div class="mb-3">
+<label class="form-label">Tipe</label>
+<select id="editWheels" class="form-select modern-input">
+<option value="4">Mobil (Roda 4)</option>
+<option value="2">Motor (Roda 2)</option>
+<option value="6">Truk (Roda 6)</option>
+</select>
+</div>
+<div class="mb-3">
+<label class="form-label">Servis Terakhir</label>
+<input type="date" id="editLast" class="form-control modern-input">
+</div>
+<div class="mb-3">
+<label class="form-label">Interval (bulan)</label>
+<input type="number" id="editInterval" class="form-control modern-input">
+</div>
+</form>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+<button type="button" class="btn btn-primary" onclick="saveEdit()">Simpan</button>
+</div>
+</div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const form=document.getElementById('form');
+const search=document.getElementById('search');
+let cars;
+try {
+  cars = JSON.parse(localStorage.getItem('cars')) || [];
+  if (!Array.isArray(cars)) cars = [];
+} catch (e) {
+  cars = [];
+}
+let editModalObj;
+
+function render(){
+const d2=document.getElementById('data2');
+const d4=document.getElementById('data4');
+const d6=document.getElementById('data6');
+d2.innerHTML=''; d4.innerHTML=''; d6.innerHTML='';
+
+let s=0,w=0,d=0;
+const today=new Date(); today.setHours(0,0,0,0);
+
+cars.forEach((c,i)=>{
+const term = search.value.toLowerCase();
+const match = (c.mobil || '').toLowerCase().includes(term) ||
+              (c.merek && c.merek.toLowerCase().includes(term)) ||
+              (c.nopol && c.nopol.toLowerCase().includes(term));
+if(!match) return;
+
+const next=new Date(c.last);
+next.setMonth(next.getMonth()+Number(c.interval));
+const diff=(next-today)/86400000;
+
+let status,color;
+if(diff<=0){status='Bahaya';color='danger';d++}
+else if(diff<30){status='Warning';color='warn';w++}
+else{status='Aman';color='safe';s++}
+
+let icon='fa-car';
+let target=d4;
+
+if(c.wheels=='2') { icon='fa-motorcycle'; target=d2; }
+else if(c.wheels=='6') { icon='fa-truck'; target=d6; }
+else { icon='fa-car'; target=d4; }
+
+target.innerHTML+=`
+<tr>
+<td><i class="fas ${icon} me-2" style="color:var(--primary)"></i>${c.mobil}</td>
+<td>${c.merek || '-'}</td>
+<td>${c.nopol || '-'}</td>
+<td>${c.last}</td>
+<td>${next.toISOString().slice(0,10)}</td>
+<td><span class="badge ${color}">${status}</span></td>
+<td>
+<button onclick="servis(${i})" class="icon-btn ok"><i class="fas fa-check"></i></button>
+<button onclick="edit(${i})" class="icon-btn edit"><i class="fas fa-pen"></i></button>
+<button onclick="hapus(${i})" class="icon-btn del"><i class="fas fa-trash"></i></button>
+</td>
+</tr>`;
+});
+
+countSafe.textContent=s;
+countWarn.textContent=w;
+countDanger.textContent=d;
+}
+
+form.onsubmit=e=>{
+e.preventDefault();
+cars.push({
+mobil:document.getElementById('mobil').value,
+merek:document.getElementById('merek').value,
+nopol:document.getElementById('nopol').value,
+last:document.getElementById('last').value,
+interval:document.getElementById('interval').value,
+wheels:document.getElementById('wheels').value
+});
+localStorage.setItem('cars',JSON.stringify(cars));
+form.reset(); document.getElementById('interval').value=6;
+render();
+};
+
+function servis(i){
+cars[i].last=new Date().toISOString().slice(0,10);
+localStorage.setItem('cars',JSON.stringify(cars));
+render();
+}
+
+function hapus(i){
+cars.splice(i,1);
+localStorage.setItem('cars',JSON.stringify(cars));
+render();
+}
+
+function edit(i){
+if(!editModalObj) editModalObj = new bootstrap.Modal(document.getElementById('editModal'));
+const c = cars[i];
+document.getElementById('editIndex').value = i;
+document.getElementById('editMobil').value = c.mobil;
+document.getElementById('editMerek').value = c.merek || '';
+document.getElementById('editNopol').value = c.nopol || '';
+document.getElementById('editLast').value = c.last;
+document.getElementById('editInterval').value = c.interval;
+document.getElementById('editWheels').value = c.wheels || '4';
+editModalObj.show();
+}
+
+function saveEdit(){
+const i = document.getElementById('editIndex').value;
+cars[i].mobil = document.getElementById('editMobil').value;
+cars[i].merek = document.getElementById('editMerek').value;
+cars[i].nopol = document.getElementById('editNopol').value;
+cars[i].last = document.getElementById('editLast').value;
+cars[i].interval = document.getElementById('editInterval').value;
+cars[i].wheels = document.getElementById('editWheels').value;
+localStorage.setItem('cars',JSON.stringify(cars));
+render();
+editModalObj.hide();
+}
+
+search.oninput=render;
+render();
+</script>
+
+</body>
+</html>
